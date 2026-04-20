@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #232f3e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #ff9900;
+            margin-bottom: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #e88b00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #232f3e;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>💰 Expense Tracker</h1>
+
+        <!-- Add Expense -->
+        <div class="card">
+            <h2>Add Expense</h2>
+            <input type="date" id="date" />
+            <input type="number" id="amount" placeholder="Amount (£)" />
+            <input type="text" id="category" placeholder="Category (e.g. Food, Transport)" />
+            <input type="text" id="description" placeholder="Description" />
+            <button onclick="addExpense()">Add Expense</button>
+        </div>
+
+        <!-- View Expenses -->
+        <div class="card">
+            <h2>All Expenses</h2>
+            <button onclick="loadExpenses()" style="margin-bottom:15px">Refresh Expenses</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="expenses-table"></tbody>
+            </table>
+        </div>
+
+        <!-- Summary -->
+        <div class="card">
+            <h2>Summary by Category</h2>
+            <button onclick="loadSummary()" style="margin-bottom:15px">View Summary</button>
+            <div id="summary-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://37c09zywzb.execute-api.eu-west-2.amazonaws.com/prod';
+
+        async function addExpense() {
+            const expense = {
+                date: document.getElementById('date').value,
+                amount: document.getElementById('amount').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value
+            };
+            const res = await fetch(`${API}/expenses`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(expense)
+            });
+            const data = await res.json();
+            alert('Expense added!');
+            loadExpenses();
+        }
+
+        async function loadExpenses() {
+            const res = await fetch(`${API}/expenses`);
+            const data = await res.json();
+            const tbody = document.getElementById('expenses-table');
+            tbody.innerHTML = '';
+            data.forEach(e => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${e.date}</td>
+                        <td>£${e.amount}</td>
+                        <td>${e.category}</td>
+                        <td>${e.description}</td>
+                    </tr>`;
+            });
+        }
+
+        async function loadSummary() {
+            const res = await fetch(`${API}/expenses/summary`);
+            const data = await res.json();
+            const container = document.getElementById('summary-container');
+            container.innerHTML = '';
+            for (const [category, total] of Object.entries(data)) {
+                container.innerHTML += `
+                    <div class="summary-item">
+                        <span>${category}</span>
+                        <strong>£${total.toFixed(2)}</strong>
+                    </div>`;
+            }
+        }
+
+        // Load expenses on page load
+        loadExpenses();
+    </script>
+</body>
+
+</html>
