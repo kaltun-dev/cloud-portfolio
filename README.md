@@ -198,7 +198,7 @@ cloud-portfolio/
 **Kaltun** — AWS re/Start Graduate based in London.
 
 - 🐙 GitHub: [kaltun-dev](https://github.com/kaltun-dev)
-- 💼 LinkedIn: [linkedin.com/in/kaltun](https://linkedin.com/in/kaltun)
+- 💼 LinkedIn: [linkedin.com/in/kaltun](https://linkedin.com/in/kaltun-osman)
 
 ---
 
