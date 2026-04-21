@@ -7,20 +7,22 @@ dynamodb = boto3.resource('dynamodb', region_name='eu-west-2')
 table = dynamodb.Table('expenses')
 
 def lambda_handler(event, context):
-    print("EVENT:", json.dumps(event))
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
+        'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS'
     }
 
     method = event.get('httpMethod', '')
     path = event.get('path', '')
 
+    print(f"METHOD: {method} PATH: {path}")
+
     if method == 'OPTIONS':
         return {'statusCode': 200, 'headers': headers, 'body': ''}
 
     try:
+        # POST /expenses - Add expense
         if method == 'POST' and 'expenses' in path:
             body = json.loads(event['body'])
             expense = {
@@ -37,6 +39,29 @@ def lambda_handler(event, context):
                 'body': json.dumps({'message': 'Expense added', 'expense': expense})
             }
 
+       # DELETE /expenses/clear - Clear all expenses
+        if method == 'DELETE' and 'clear' in path:
+            result = table.scan()
+            with table.batch_writer() as batch:
+                for item in result['Items']:
+                    batch.delete_item(Key={'id': item['id']})
+            return {
+                'statusCode': 200,
+                'headers': headers,
+                'body': json.dumps({'message': 'All expenses cleared'})
+            }
+
+        # DELETE /expenses/{id} - Delete single expense
+        if method == 'DELETE' and 'expenses' in path:
+            expense_id = path.split('/')[-1]
+            table.delete_item(Key={'id': expense_id})
+            return {
+                'statusCode': 200,
+                'headers': headers,
+                'body': json.dumps({'message': 'Expense deleted'})
+            }
+
+        # GET /expenses/summary - Summary by category
         if method == 'GET' and 'summary' in path:
             result = table.scan()
             summary = {}
@@ -50,6 +75,7 @@ def lambda_handler(event, context):
                 'body': json.dumps(summary)
             }
 
+        # GET /expenses - Get all expenses
         if method == 'GET' and 'expenses' in path:
             result = table.scan()
             return {

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaltun | Cloud Engineer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --border: #1e1e2e;
+            --orange: #ff9900;
+            --orange-dim: rgba(255, 153, 0, 0.12);
+            --white: #f0f0f0;
+            --muted: #888;
+            --green: #00d4aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            font-family: 'Space Mono', monospace;
+            color: var(--orange);
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--orange);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 153, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 153, 0, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 153, 0, 0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--green);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.2s;
+        }
+
+        .hero-tag::before {
+            content: '> ';
+            color: var(--orange);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.4s;
+        }
+
+        h1 span {
+            color: var(--orange);
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.6s;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.8s;
+        }
+
+        .badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            padding: 0.4rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .badge.active {
+            border-color: var(--orange);
+            color: var(--orange);
+            background: var(--orange-dim);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 1s;
+        }
+
+        .btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.85rem 2rem;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            background: #e88b00;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        /* ── SECTIONS ── */
+        section {
+            padding: 6rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 4rem;
+        }
+
+        /* ── ABOUT ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .about-text p strong {
+            color: var(--white);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.2rem;
+            border-radius: 4px;
+            transition: border-color 0.2s;
+        }
+
+        .skill-card:hover {
+            border-color: var(--orange);
+        }
+
+        .skill-card-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--orange);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* ── PROJECTS ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--orange);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: rgba(255, 153, 0, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--orange);
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.3rem 0.7rem;
+            background: var(--orange-dim);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            color: var(--orange);
+            border-radius: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        .project-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .project-link::after {
+            content: ' →';
+        }
+
+        /* ── CERTIFICATIONS ── */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cert-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .cert-card:hover {
+            border-color: rgba(255, 153, 0, 0.3);
+        }
+
+        .cert-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--orange), transparent);
+        }
+
+        .cert-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.4rem;
+        }
+
+        .cert-issuer {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+            color: var(--orange);
+            background: var(--orange-dim);
+        }
+
+        .cert-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--orange);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .certs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── CONTACT ── */
+        .contact-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-card {
+            flex: 1;
+            min-width: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-3px);
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .contact-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        footer span {
+            color: var(--orange);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">kaltun.dev</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#certifications">Certifications</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <div class="hero-tag">AWS re/Start Graduate · Cloud Engineer</div>
+            <h1>Hi, I'm <span>Kaltun</span></h1>
+            <p class="hero-desc">
+                I build cloud infrastructure on AWS — serverless backends,
+                infrastructure as code, and full-stack applications deployed
+                at scale.
+            </p>
+            <div class="hero-badges">
+                <span class="badge active">AWS</span>
+                <span class="badge active">Terraform</span>
+                <span class="badge active">Python</span>
+                <span class="badge">Lambda</span>
+                <span class="badge">DynamoDB</span>
+                <span class="badge">S3</span>
+                <span class="badge">API Gateway</span>
+                <span class="badge">CloudFront</span>
+                <span class="badge">Linux</span>
+                <span class="badge">JavaScript</span>
+            </div>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-label">// 01 — About</div>
+        <h2 class="section-title">Who I Am</h2>
+        <div class="section-divider"></div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>
+                    I'm a <strong>cloud engineer</strong> and AWS re/Start graduate based in London,
+                    passionate about building scalable, serverless infrastructure on AWS.
+                </p>
+                <p>
+                    My background spans <strong>Python development</strong>, cloud architecture,
+                    and infrastructure as code with Terraform — I enjoy turning ideas into
+                    deployed, working systems.
+                </p>
+                <p>
+                    I believe in writing clean, maintainable infrastructure and code.
+                    Every project here is <strong>live on AWS</strong> — not just local demos.
+                </p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-card-title">Cloud</div>
+                    <p>AWS Lambda, S3, CloudFront, API Gateway, DynamoDB, IAM, SSM</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-card-title">IaC</div>
+                    <p>Terraform, remote state management, modular infrastructure</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-card-title">Code</div>
+                    <p>Python, JavaScript, HTML, CSS, REST APIs, JSON</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-card-title">Tools</div>
+                    <p>Git, GitHub, Linux, WSL, VS Code, AWS CLI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="section-label">// 02 — Projects</div>
+        <h2 class="section-title">What I've Built</h2>
+        <div class="section-divider"></div>
+        <div class="projects-grid">
+
+            <!-- Expense Tracker -->
+            <a class="project-card"
+                href="http://cloud-portfolio-frontend.s3-website.eu-west-2.amazonaws.com/projects/expense-tracker/index.html"
+                target="_blank">
+                <div class="project-number">01 — Python / AWS</div>
+                <div class="project-title">Expense Tracker</div>
+                <p class="project-desc">
+                    A serverless expense tracking app. Add expenses, view all transactions,
+                    and get a spending summary by category — all stored in DynamoDB.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Lambda</span>
+                    <span class="tag">API Gateway</span>
+                    <span class="tag">DynamoDB</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">S3</span>
+                </div>
+                <div class="project-link">View Project</div>
+            </a>
+
+            <!-- Weather Dashboard -->
+            <a class="project-card" href="#" target="_blank">
+                <div class="project-number">02 — Python / AWS</div>
+                <div class="project-title">Weather Dashboard</div>
+                <p class="project-desc">
+                    Real-time weather data app. Enter any city to get temperature,
+                    humidity and a 3-day forecast — Lambda calls OpenWeatherMap API
+                    with keys stored securely in SSM Parameter Store.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Lambda</span>
+                    <span class="tag">API Gateway</span>
+                    <span class="tag">SSM</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">OpenWeatherMap</span>
+                </div>
+                <div class="project-link">Coming Soon</div>
+            </a>
+
+            <!-- Linux Quiz -->
+            <a class="project-card" href="#" target="_blank">
+                <div class="project-number">03 — CSS / JavaScript</div>
+                <div class="project-title">Linux Quiz App</div>
+                <p class="project-desc">
+                    An interactive quiz testing Linux command line knowledge —
+                    covering file systems, permissions, process management
+                    and shell scripting. Built with vanilla JS and CSS.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">S3</span>
+                    <span class="tag">CloudFront</span>
+                </div>
+                <div class="project-link">View Project</div>
+            </a>
+
+            <!-- Terraform -->
+            <a class="project-card" href="https://github.com/kaltun-dev/cloud-portfolio" target="_blank">
+                <div class="project-number">04 — Infrastructure as Code</div>
+                <div class="project-title">Cloud Infrastructure</div>
+                <p class="project-desc">
+                    The entire AWS infrastructure for this portfolio — S3, CloudFront,
+                    Lambda, API Gateway, DynamoDB, and IAM — provisioned with Terraform
+                    and stored in a remote S3 backend.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Terraform</span>
+                    <span class="tag">S3 Backend</span>
+                    <span class="tag">CloudFront</span>
+                    <span class="tag">IAM</span>
+                    <span class="tag">GitHub</span>
+                </div>
+                <div class="project-link">View on GitHub</div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+        <div class="section-label">// 03 — Certifications</div>
+        <h2 class="section-title">Credentials</h2>
+        <div class="section-divider"></div>
+        <div class="certs-grid">
+
+            <div class="cert-card">
+                <div class="cert-icon">🎓</div>
+                <div class="cert-name">AWS re/Start</div>
+                <div class="cert-issuer">Amazon Web Services</div>
+                <span class="cert-status">In Progress</span>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-icon">☁️</div>
+                <div class="cert-name">AWS Cloud Practitioner</div>
+                <div class="cert-issuer">Amazon Web Services</div>
+                <span class="cert-status">In Progress</span>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-icon">🔐</div>
+                <div class="cert-name">CompTIA Security+</div>
+                <div class="cert-issuer">CompTIA</div>
+                <span class="cert-status">In Progress</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="section-label">// 04 — Contact</div>
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="section-divider"></div>
+        <div class="contact-grid">
+            <a class="contact-card" href="https://github.com/kaltun-dev" target="_blank">
+                <div class="contact-icon">🐙</div>
+                <div>
+                    <div class="contact-label">GitHub</div>
+                    <div class="contact-value">kaltun-dev</div>
+                </div>
+            </a>
+            <a class="contact-card" href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank">
+                <div class="contact-icon">💼</div>
+                <div>
+                    <div class="contact-label">LinkedIn</div>
+                    <div class="contact-value">Kaltun</div>
+                </div>
+            </a>
+            <a class="contact-card" href="mailto:your@email.com">
+                <div class="contact-icon">✉️</div>
+                <div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">your@email.com</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Built with <span>AWS</span> + Terraform by Kaltun</p>
+        <p>eu-west-2 <span>·</span> London</p>
+    </footer>
+
+</body>
+
+</html>
