@@ -35,6 +35,15 @@
             color: var(--white);
             font-family: 'Syne', sans-serif;
             overflow-x: hidden;
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        strong {
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
         }
 
         /* ── NOISE OVERLAY ── */
@@ -145,10 +154,23 @@
             font-size: clamp(3rem, 8vw, 6.5rem);
             font-weight: 800;
             line-height: 1;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
             margin-bottom: 1.5rem;
             opacity: 0;
             animation: fadeUp 0.6s ease forwards 0.4s;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .strong {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: normal;
         }
 
         h1 span {
@@ -619,7 +641,7 @@
 
     <!-- NAV -->
     <nav>
-        <div class="nav-logo">kaltun.cloud</div>
+        <a href="#" class="nav-logo">kaltun.cloud</a>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
@@ -637,20 +659,20 @@
             <h1>Hi, I'm <span>Kaltun</span></h1>
 
             <p class="hero-desc">
-                I’m a <strong>cloud engineer</strong> based in London, building secure, scalable infrastructure and
+                I’m a cloud engineer based in London, building secure, scalable infrastructure and
                 applications on AWS.
             </p>
             <div class="hero-badges">
                 <span class="badge active">AWS</span>
                 <span class="badge active">Terraform</span>
                 <span class="badge active">Python</span>
-                <span class="badge">Lambda</span>
-                <span class="badge">DynamoDB</span>
-                <span class="badge">S3</span>
-                <span class="badge">API Gateway</span>
-                <span class="badge">CloudFront</span>
-                <span class="badge">Linux</span>
-                <span class="badge">JavaScript</span>
+                <span class="badge active">Lambda</span>
+                <span class="badge active">DynamoDB</span>
+                <span class="badge active">S3</span>
+                <span class="badge active">API Gateway</span>
+                <span class="badge active">CloudFront</span>
+                <span class="badge active">Linux</span>
+                <span class="badge active">JavaScript</span>
             </div>
             <div class="hero-cta">
                 <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -729,44 +751,6 @@
                 </div>
                 <div class="project-link">View Project</div>
             </a>
-
-            <!-- Weather Dashboard -->
-            <a class="project-card" href="#" target="_blank">
-                <div class="project-number">02 — Python / AWS</div>
-                <div class="project-title">Weather Dashboard</div>
-                <p class="project-desc">
-                    Real-time weather data app. Enter any city to get temperature,
-                    humidity and a 3-day forecast — Lambda calls OpenWeatherMap API
-                    with keys stored securely in SSM Parameter Store.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">Lambda</span>
-                    <span class="tag">API Gateway</span>
-                    <span class="tag">SSM</span>
-                    <span class="tag">Python</span>
-                    <span class="tag">OpenWeatherMap</span>
-                </div>
-
-                <div class="project-link">Coming Soon</div>
-                <!-- CarbLens -->
-                <a class="project-card" href="#" target="_blank">
-                    <div class="project-number">05 — AI / Python</div>
-                    <div class="project-title">CarbLens</div>
-                    <p class="project-desc">
-                        An AI-powered meal image scanner that analyses photos of food
-                        and returns structured carbohydrate estimates with confidence
-                        indicators — built for users managing carb intake.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Claude AI</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Anthropic API</span>
-                    </div>
-                    <div class="project-link">Coming Soon</div>
-                </a>
-            </a>
-
             <!-- Linux Quiz -->
             <a class="project-card"
                 href="http://cloud-portfolio-frontend.s3-website.eu-west-2.amazonaws.com/projects/linux-quiz/index.html"
@@ -787,7 +771,6 @@
                 </div>
                 <div class="project-link">View Project</div>
             </a>
-
             <!-- Terraform -->
             <a class="project-card" href="https://github.com/kaltun-dev/cloud-portfolio" target="_blank">
                 <div class="project-number">04 — Infrastructure as Code</div>
@@ -806,6 +789,42 @@
                 </div>
                 <div class="project-link">View on GitHub</div>
             </a>
+
+            <!-- Weather Dashboard -->
+            <a class="project-card" href="#" target="_blank">
+                <div class="project-number">02 — Python / AWS</div>
+                <div class="project-title">Weather Dashboard</div>
+                <p class="project-desc">
+                    Real-time weather data app. Enter any city to get temperature,
+                    humidity and a 3-day forecast — Lambda calls OpenWeatherMap API
+                    with keys stored securely in SSM Parameter Store.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Lambda</span>
+                    <span class="tag">API Gateway</span>
+                    <span class="tag">SSM</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">OpenWeatherMap</span>
+                </div>
+                <div class="project-link">Coming Soon</div>
+
+                <!-- CarbLens -->
+                <a class="project-card" href="#" target="_blank">
+                    <div class="project-number">05 — AI / Python</div>
+                    <div class="project-title">CarbLens</div>
+                    <p class="project-desc">
+                        An AI-powered meal image scanner that analyses photos of food
+                        and returns structured carbohydrate estimates with confidence
+                        indicators — built for users managing carb intake.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Claude AI</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Anthropic API</span>
+                    </div>
+                    <div class="project-link">Coming Soon</div>
+                </a>
 
         </div>
     </section>
