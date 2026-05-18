@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f9f9f6;
+      --white: #ffffff;
+      --green: #2d5a27;
+      --green-light: #4a7c42;
+      --green-dim: #eef4ed;
+      --green-border: #c2d9bf;
+      --text: #1a1a1a;
+      --muted: #6b7c6a;
+      --border: #e2e8e1;
+      --surface: #f2f5f1;
+      --red: #c0392b;
+      --red-dim: #fdf0ee;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Fraunces', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .hero-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 2.5rem;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--white);
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus { border-color: var(--green); }
+
+    .search-input::placeholder { color: var(--muted); font-weight: 300; }
+
+    .search-btn {
+      padding: 0.9rem 1.75rem;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .search-btn:hover { background: var(--green-light); }
+    .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .error {
+      background: var(--red-dim);
+      border: 1px solid #f0c4c0;
+      color: var(--red);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      display: none;
+      letter-spacing: 0.02em;
+    }
+
+    .error.visible { display: block; }
+
+    .loading {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+      padding: 3rem 0;
+      display: none;
+    }
+
+    .loading.visible { display: block; }
+
+    .results { display: none; }
+    .results.visible { display: block; animation: fadeIn 0.4s ease forwards; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .city-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .city-name {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .city-name em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .city-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .forecast-card {
+      background: var(--white);
+      padding: 1.75rem 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .forecast-card:hover { background: var(--green-dim); }
+
+    .forecast-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--green);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .forecast-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .forecast-temp {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .forecast-temp span {
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    .forecast-feels {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .forecast-desc {
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 300;
+      text-transform: capitalize;
+      margin-bottom: 0.75rem;
+    }
+
+    .forecast-humidity {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .forecast-humidity::before {
+      content: '💧';
+      font-size: 0.75rem;
+    }
+
+    .powered-by {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .powered-by a {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--green); }
+
+    @media (max-width: 600px) {
+      .forecast-grid { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">Weather Dashboard</div>
+
+  <h1 class="hero-title">Check the <em>weather</em></h1>
+  <p class="hero-sub">Enter a city to get a 3-day forecast</p>
+
+  <div class="search-row">
+    <input type="text" class="search-input" id="city-input" placeholder="London, New York, Beijing..." />
+    <button class="search-btn" id="search-btn">Search</button>
+  </div>
+
+  <div class="error" id="error"></div>
+  <div class="loading" id="loading">Fetching weather data...</div>
+
+  <div class="results" id="results">
+    <div class="city-header">
+      <div class="city-name" id="city-name"></div>
+      <div class="city-meta" id="city-meta"></div>
+    </div>
+    <div class="forecast-grid" id="forecast-grid"></div>
+    <div class="powered-by">Powered by <a href="https://openweathermap.org" target="_blank">OpenWeatherMap</a> · Serverless on AWS Lambda</div>
+  </div>
+
+  <a href="https://du18eyz9n78qo.cloudfront.net" class="back-link">← Back to Portfolio</a>
+</div>
+
+<script>
+  const API_URL = 'https://hkmt7tac1a.execute-api.eu-west-2.amazonaws.com/prod/weather';
+
+  const weatherIcons = {
+    '01d': '☀️', '01n': '🌙',
+    '02d': '⛅', '02n': '⛅',
+    '03d': '☁️', '03n': '☁️',
+    '04d': '☁️', '04n': '☁️',
+    '09d': '🌧️', '09n': '🌧️',
+    '10d': '🌦️', '10n': '🌧️',
+    '11d': '⛈️', '11n': '⛈️',
+    '13d': '❄️', '13n': '❄️',
+    '50d': '🌫️', '50n': '🌫️',
+  };
+
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  }
+
+  async function getWeather() {
+    const city = document.getElementById('city-input').value.trim();
+    if (!city) return;
+
+    const errorEl = document.getElementById('error');
+    const loadingEl = document.getElementById('loading');
+    const resultsEl = document.getElementById('results');
+
+    errorEl.classList.remove('visible');
+    resultsEl.classList.remove('visible');
+    loadingEl.classList.add('visible');
+    document.getElementById('search-btn').disabled = true;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ city })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      document.getElementById('city-name').innerHTML = `<em>${data.city}</em>`;
+      document.getElementById('city-meta').textContent = `${data.country} · 3-Day Forecast`;
+
+      const grid = document.getElementById('forecast-grid');
+      grid.innerHTML = '';
+
+      data.forecasts.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'forecast-card';
+        card.innerHTML = `
+          <div class="forecast-date">${formatDate(f.date)}</div>
+          <span class="forecast-icon">${weatherIcons[f.icon] || '🌤️'}</span>
+          <div class="forecast-temp">${f.temp}<span>°C</span></div>
+          <div class="forecast-feels">Feels like ${f.feels_like}°C</div>
+          <div class="forecast-desc">${f.description}</div>
+          <div class="forecast-humidity">${f.humidity}% humidity</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      loadingEl.classList.remove('visible');
+      resultsEl.classList.add('visible');
+
+    } catch (err) {
+      loadingEl.classList.remove('visible');
+      errorEl.textContent = `Could not fetch weather for "${city}". Please check the city name and try again.`;
+      errorEl.classList.add('visible');
+    }
+
+    document.getElementById('search-btn').disabled = false;
+  }
+
+  document.getElementById('search-btn').addEventListener('click', getWeather);
+  document.getElementById('city-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') getWeather();
+  });
+</script>
+</body>
+</html>
