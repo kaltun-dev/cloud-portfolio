@@ -21,7 +21,16 @@ jobs:
           aws-region: eu-west-2
 
       - name: Sync frontend to S3
-        run: aws s3 sync frontend/ s3://cloud-portfolio-frontend --delete
+        run: aws s3 sync frontend/ s3://cloud-portfolio-frontend/ --delete
+
+      - name: Sync expense tracker
+        run: aws s3 sync projects/expense-tracker/ s3://cloud-portfolio-frontend/projects/expense-tracker/ --exclude "*.zip" --exclude "*.py"
+
+      - name: Sync weather dashboard
+        run: aws s3 sync projects/weather-dashboard/ s3://cloud-portfolio-frontend/projects/weather-dashboard/ --exclude "*.zip" --exclude "*.py"
+
+      - name: Sync Linux quiz
+        run: aws s3 sync projects/Ci-Quiz-App/CI-Quiz-App/ s3://cloud-portfolio-frontend/projects/linux-quiz/
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id EJNQOYSHP4HLB --paths "/*"
