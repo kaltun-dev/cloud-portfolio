@@ -1,4 +1,3 @@
-cat > ~/cloud-portfolio/.github/workflows/deploy.yml << 'ENDOFFILE'
 name: Deploy Portfolio
 
 on:
