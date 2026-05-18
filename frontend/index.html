@@ -252,7 +252,7 @@
 
     .skills-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -560,6 +560,7 @@
       .hero { padding: 6rem 1.5rem 3rem; }
       section { padding: 4rem 1.5rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
       .projects-grid { grid-template-columns: 1fr; }
       .certs-grid { grid-template-columns: 1fr; }
       .contact-grid { flex-direction: column; }
@@ -602,8 +603,11 @@
         <span class="badge active">S3</span>
         <span class="badge active">API Gateway</span>
         <span class="badge active">CloudFront</span>
+        <span class="badge active">SSM</span>
         <span class="badge active">Linux</span>
         <span class="badge active">JavaScript</span>
+        <span class="badge active">GitHub Actions</span>
+        <span class="badge active">CI/CD</span>
       </div>
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -617,41 +621,22 @@
     <div class="section-label">01 About</div>
     <h2 class="section-title">Who I <em>Am</em></h2>
     <div class="section-divider"></div>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>
-          I'm based in London, working with <strong>AWS, Terraform, Python and Docker</strong>
-          to build and deploy cloud infrastructure. I focus on writing real, working systems,
-          not just following tutorials.
-        </p>
-        <p>
-          My approach is <strong>infrastructure as code from day one</strong>. Every resource
-          is provisioned with Terraform, every deployment goes through a pipeline, and every
-          project is version controlled on GitHub.
-        </p>
-        <p>
-          I enjoy the full stack of cloud work: from writing Lambda functions and designing
-          API architecture, to containerising applications with Docker and automating
-          deployments with <strong>CI/CD pipelines</strong>.
-        </p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-title">Cloud</div>
+        <p>AWS Lambda, S3, CloudFront, API Gateway, DynamoDB, IAM, SSM Parameter Store, ECR</p>
       </div>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <div class="skill-card-title">Cloud</div>
-          <p>AWS Lambda, S3, CloudFront, API Gateway, DynamoDB, IAM, SSM, ECR</p>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">IaC</div>
-          <p>Terraform, remote state, S3 backend, modular infrastructure</p>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">Code</div>
-          <p>Python, JavaScript, HTML, CSS, REST APIs, Bash</p>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">Tools</div>
-          <p>Git, GitHub, Linux, WSL, VS Code, AWS CLI</p>
-        </div>
+      <div class="skill-card">
+        <div class="skill-card-title">IaC</div>
+        <p>Terraform, remote state, S3 backend, modular infrastructure</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Code</div>
+        <p>Python, JavaScript, HTML, CSS, REST APIs, Bash</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Tools</div>
+        <p>Git, GitHub Actions, CI/CD, Linux, WSL, VS Code, AWS CLI, PowerShell</p>
       </div>
     </div>
   </section>
@@ -811,6 +796,24 @@
           <div class="trouble-desc">Older HP laptop hardware did not meet Windows 11 specs, causing system crashes every few minutes after a forced update. Resolved by migrating the entire development environment to a new machine.</div>
         </div>
         <div class="trouble-tag">Hardware · Windows</div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-number">07</div>
+        <div class="trouble-content">
+          <div class="trouble-title">VS Code WSL server crashed repeatedly on ARM64</div>
+          <div class="trouble-desc">VS Code WSL extension crashed repeatedly on the Samsung Galaxy Book2 Go with error code 0x8007274c. Fixed by running wsl --shutdown then restarting WSL from PowerShell. Known issue with ARM64 devices.</div>
+        </div>
+        <div class="trouble-tag">WSL · VS Code · ARM64</div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-number">08</div>
+        <div class="trouble-content">
+          <div class="trouble-title">.terraform/ binary committed to Git again on new laptop</div>
+          <div class="trouble-desc">After setting up a new machine, the .terraform/ provider binary was committed before .gitignore was in place. Fixed again with git filter-branch to rewrite history. Lesson: always create .gitignore before running terraform init on any new machine.</div>
+        </div>
+        <div class="trouble-tag">Git · Terraform</div>
       </div>
 
     </div>
