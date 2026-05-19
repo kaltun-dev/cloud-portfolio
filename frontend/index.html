@@ -587,7 +587,6 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-content">
-      <div class="hero-tag">Cloud Engineer · London</div>
       <h1>Hi, I'm <em>Kaltun</em></h1>
       <p class="hero-desc">
         I build cloud infrastructure: serverless apps, containerised deployments,
@@ -641,14 +640,14 @@
 
   <!-- PROJECTS -->
   <section id="projects">
-    <div class="section-label">02 Projects</div>
+    <div class="section-label">Projects</div>
     <h2 class="section-title">What I've <em>Built</em></h2>
     <p class="section-sub">All projects are live on AWS and managed with Terraform.</p>
     <div class="section-divider"></div>
     <div class="projects-grid">
 
       <div class="project-card">
-        <div class="project-number">01 Python · AWS Serverless</div>
+        <div class="project-number">Python · AWS Serverless</div>
         <div class="project-title">Expense Tracker</div>
         <p class="project-desc">
           A serverless expense tracking app. Add expenses, view all transactions,
@@ -670,7 +669,7 @@
       </div>
 
       <div class="project-card">
-        <div class="project-number">02 Python · AWS</div>
+        <div class="project-number">Python · AWS</div>
         <div class="project-title">Weather Dashboard</div>
         <p class="project-desc">
           Real-time weather data app. Enter any city to get temperature, humidity
@@ -691,7 +690,7 @@
       </div>
 
       <div class="project-card">
-        <div class="project-number">03 JavaScript · CSS</div>
+        <div class="project-number">JavaScript · CSS</div>
         <div class="project-title">Linux Quiz App</div>
         <p class="project-desc">
           An interactive quiz testing Linux command line knowledge covering file
@@ -712,7 +711,7 @@
       </div>
 
       <div class="project-card">
-        <div class="project-number">04 Infrastructure as Code</div>
+        <div class="project-number">Infrastructure as Code</div>
         <div class="project-title">Cloud Infrastructure</div>
         <p class="project-desc">
           The entire AWS infrastructure for this portfolio: S3, CloudFront,
@@ -736,14 +735,13 @@
 
   <!-- TROUBLESHOOTING -->
   <section id="troubleshooting">
-    <div class="section-label">03 Troubleshooting</div>
+    <div class="section-label">Troubleshooting</div>
     <h2 class="section-title">Problems I've <em>Solved</em></h2>
     <p class="section-sub">Real issues encountered and fixed throughout this project.</p>
     <div class="section-divider"></div>
     <div class="trouble-list">
 
       <div class="trouble-item">
-        <div class="trouble-number">01</div>
         <div class="trouble-content">
           <div class="trouble-title">Lambda proxy integration not enabled on API Gateway</div>
           <div class="trouble-desc">API calls returned empty events. Fixed by enabling Lambda proxy integration on all API Gateway methods. Without it, the event object arrives empty and the Lambda function receives no data.</div>
@@ -752,7 +750,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">02</div>
         <div class="trouble-content">
           <div class="trouble-title">Incorrect API path: /prod/expenses instead of /expenses</div>
           <div class="trouble-desc">Requests were hitting a 404 because the stage prefix /prod was being duplicated in the URL. The stage is handled separately by API Gateway. The correct path is /expenses, not /prod/expenses.</div>
@@ -761,7 +758,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">03</div>
         <div class="trouble-content">
           <div class="trouble-title">Quiz logic lost when replacing questions in script.js</div>
           <div class="trouble-desc">When updating quiz questions, the entire script.js was replaced, wiping the quiz logic. Lesson learned: always preserve existing logic and only replace the relevant section of a file.</div>
@@ -770,7 +766,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">04</div>
         <div class="trouble-content">
           <div class="trouble-title">.terraform/ binary accidentally committed to Git</div>
           <div class="trouble-desc">A large Terraform provider binary was committed before .gitignore was created. Resolved by rewriting Git history with git filter-branch to remove the file entirely from all commits.</div>
@@ -779,7 +774,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">05</div>
         <div class="trouble-content">
           <div class="trouble-title">WSL 2 broke WiFi on Samsung Galaxy Book2 Go (ARM64)</div>
           <div class="trouble-desc">Installing WSL via wsl --install caused the Qualcomm WiFi adapter to show Code 45. The fix was a full PC reset, then reinstalling WSL via the Microsoft Store, the correct method for ARM64 Snapdragon devices.</div>
@@ -788,7 +782,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">06</div>
         <div class="trouble-content">
           <div class="trouble-title">HP laptop hardware incompatible with Windows 11 update</div>
           <div class="trouble-desc">Older HP laptop hardware did not meet Windows 11 specs, causing system crashes every few minutes after a forced update. Resolved by migrating the entire development environment to a new machine.</div>
@@ -797,7 +790,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">07</div>
         <div class="trouble-content">
           <div class="trouble-title">VS Code WSL server crashed repeatedly on ARM64</div>
           <div class="trouble-desc">VS Code WSL extension crashed repeatedly on the Samsung Galaxy Book2 Go with error code 0x8007274c. Fixed by running wsl --shutdown then restarting WSL from PowerShell. Known issue with ARM64 devices.</div>
@@ -806,7 +798,6 @@
       </div>
 
       <div class="trouble-item">
-        <div class="trouble-number">08</div>
         <div class="trouble-content">
           <div class="trouble-title">.terraform/ binary committed to Git again on new laptop</div>
           <div class="trouble-desc">After setting up a new machine, the .terraform/ provider binary was committed before .gitignore was in place. Fixed again with git filter-branch to rewrite history. Lesson: always create .gitignore before running terraform init on any new machine.</div>
@@ -819,7 +810,7 @@
 
   <!-- CERTIFICATIONS -->
   <section id="certifications">
-    <div class="section-label">04 Certifications</div>
+    <div class="section-label">Certifications</div>
     <h2 class="section-title"><em>Credentials</em></h2>
     <div class="section-divider"></div>
     <div class="certs-grid">
@@ -843,7 +834,7 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-label">05 Contact</div>
+    <div class="section-label">Contact</div>
     <h2 class="section-title">Get in <em>Touch</em></h2>
     <div class="section-divider"></div>
     <div class="contact-grid">
