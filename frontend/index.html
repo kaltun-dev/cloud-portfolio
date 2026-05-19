@@ -81,7 +81,7 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 8rem 4rem 4rem;
+      padding: 3rem 4rem 4rem;
       border-bottom: 1px solid var(--border);
     }
 
@@ -428,6 +428,32 @@
       letter-spacing: 0.03em;
     }
 
+    /* SKILLS */
+    .skills-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .skill-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--green-border);
+      border-radius: 100px;
+      color: var(--green);
+      background: var(--green-dim);
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-pill:hover {
+      background: var(--green);
+      color: white;
+    }
+
+
     /* CERTIFICATIONS */
     .certs-grid {
       display: grid;
@@ -615,29 +641,6 @@
     </div>
   </div>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-divider"></div>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-card-title">Cloud</div>
-        <p>AWS Lambda, S3, CloudFront, API Gateway, DynamoDB, IAM, SSM Parameter Store, ECR</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-title">IaC</div>
-        <p>Terraform, remote state, S3 backend, modular infrastructure</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-title">Code</div>
-        <p>Python, JavaScript, HTML, CSS, REST APIs, Bash</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-title">Tools</div>
-        <p>Git, GitHub Actions, CI/CD, Linux, WSL, VS Code, AWS CLI, PowerShell</p>
-      </div>
-    </div>
-  </section>
-
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-label">Projects</div>
@@ -807,6 +810,49 @@
 
     </div>
   </section>
+
+<!-- SKILLS -->
+<section id="about">
+  <div class="section-label">01 Skills</div>
+  <h2 class="section-title">Technologies & Tools I <em>Used</em></h2>
+  <div class="section-divider"></div>
+  <div class="skills-cloud">
+    <span class="skill-pill">AWS Lambda</span>
+    <span class="skill-pill">S3</span>
+    <span class="skill-pill">CloudFront</span>
+    <span class="skill-pill">API Gateway</span>
+    <span class="skill-pill">DynamoDB</span>
+    <span class="skill-pill">IAM</span>
+    <span class="skill-pill">SSM Parameter Store</span>
+    <span class="skill-pill">ECR</span>
+    <span class="skill-pill">VPC</span>
+    <span class="skill-pill">Networking</span>
+    <span class="skill-pill">EC2</span>
+    <span class="skill-pill">Auto Scaling</span>
+    <span class="skill-pill">Elastic Load Balancer</span>
+    <span class="skill-pill">RDS</span>
+    <span class="skill-pill">CloudFormation</span>
+    <span class="skill-pill">Terraform</span>
+    <span class="skill-pill">Remote State</span>
+    <span class="skill-pill">Python</span>
+    <span class="skill-pill">JavaScript</span>
+    <span class="skill-pill">HTML</span>
+    <span class="skill-pill">CSS</span>
+    <span class="skill-pill">REST APIs</span>
+    <span class="skill-pill">Bash</span>
+    <span class="skill-pill">SQL</span>
+    <span class="skill-pill">MySQL</span>
+    <span class="skill-pill">Git</span>
+    <span class="skill-pill">GitHub Actions</span>
+    <span class="skill-pill">CI/CD</span>
+    <span class="skill-pill">Linux</span>
+    <span class="skill-pill">WSL</span>
+    <span class="skill-pill">VS Code</span>
+    <span class="skill-pill">AWS CLI</span>
+    <span class="skill-pill">Docker</span>
+    <span class="skill-pill">PowerShell</span>
+  </div>
+</section>
 
   <!-- CERTIFICATIONS -->
   <section id="certifications">
