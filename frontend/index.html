@@ -16,9 +16,15 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#skills">Skills</a>
       <a href="#certifications">Certifications</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -317,6 +323,19 @@
     <p>Built with <span>AWS</span> + Terraform by Kaltun</p>
     <p>eu-west-2 <span>·</span> London</p>
   </footer>
-
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.querySelector('.nav-links');
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');
+    links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.classList.remove('active');
+      links.classList.remove('open');
+    });
+  });
+</script>
 </body>
 </html>
