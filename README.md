@@ -73,7 +73,7 @@ An interactive quiz testing Linux command line knowledge with 50 questions.
 ---
 
 ### 3. 🌤️ Weather Dashboard
-*(Coming Soon)*
+**Live:** [View Project](http://cloud-portfolio-frontend.s3-website.eu-west-2.amazonaws.com/projects
 
 Real-time weather data app powered by AWS Lambda and OpenWeatherMap API.
 
