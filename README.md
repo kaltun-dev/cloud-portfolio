@@ -96,6 +96,3 @@ AWS (S3, CloudFront, Lambda, API Gateway, DynamoDB, Route 53, ACM, CloudWatch, S
 - GitHub: [kaltun-dev](https://github.com/kaltun-dev)
 - LinkedIn: [Kaltun Osman](https://www.linkedin.com/in/kaltun-osman)
 
----
-
-Built with AWS and Terraform · eu-west-2 · London
